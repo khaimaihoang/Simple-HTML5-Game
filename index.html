@@ -59,6 +59,7 @@
   
     <h2>Telegram Chat ID</h1>
     <h3 id="chat-id"></h3>
+   <button onclick="logout()">Logout</button>
   </div>
 
   <script>
@@ -77,6 +78,11 @@
         },
         body: JSON.stringify({ score: count }),
       });
+    }
+
+    function logout() {
+      localStorage.removeItem('chatId');
+      location.reload();
     }
 
     // Load the high score when the game starts
