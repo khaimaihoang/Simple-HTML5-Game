@@ -53,10 +53,10 @@
       <button onclick="increaseCount(1)">+1</button>
       <button onclick="increaseCount(2)">+2</button>
       <button onclick="increaseCount(3)">+3</button>
-      <button onclick="purchaseHighscore()">Increase Highscore (Test API Call)</button>
+
     </div>
     <h2 id="count"></h2>
-  
+        <button onclick="purchaseHighscore()">Buy Highscore</button>
     <h2>Telegram Chat ID</h1>
     <h3 id="chat-id"></h3>
    <button onclick="logout()">Logout</button>
@@ -80,7 +80,19 @@
       });
     }
 
-    function purchaseHighscore() {
+    function logout() {
+      localStorage.removeItem('chatId');
+      location.reload();
+    }
+
+    // Load the high score when the game starts
+    fetch('http://localhost:5000/highscore?chat_id=' + chatId)
+      .then(response => response.json())
+      .then(data => {
+        count = data.score;
+        document.getElementById('count').innerHTML = count;
+      });
+        function purchaseHighscore() {
       // Replace with the actual Telegram Wallet API call for purchase simulation
       fetch('https://your-telegram-wallet-api.com/purchase?chat_id=' + chatId + '&amount=100&product=Highscore_Increase', { // Replace with your API endpoint
         method: 'POST'
@@ -102,5 +114,6 @@
         }
       });
     }
-
-    function
+  </script>
+</body>
+</html>
