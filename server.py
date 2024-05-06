@@ -1,34 +1,22 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  # This will enable CORS for all routes
 
-# Replace 'high_scores.txt' with your desired file for storing scores
-HIGH_SCORES_FILE = 'high_scores.txt'
+# In-memory storage for high scores
+high_scores = {}
 
-def get_high_score():
-  try:
-    with open(HIGH_SCORES_FILE, 'r') as f:
-      return int(f.read().strip())
-  except FileNotFoundError:
-    return 0
-
-def set_high_score(score):
-  with open(HIGH_SCORES_FILE, 'w') as f:
-    f.write(str(score))
-
-@app.route('/get_high_score', methods=['GET'])
-def get_high_score_route():
-  high_score = get_high_score()
-  return jsonify({'highScore': high_score})
-
-@app.route('/set_high_score', methods=['POST'])
-def set_high_score_route():
-  data = request.get_json()
-  if data and 'score' in data:
-    new_score = data['score']
-    if new_score > get_high_score():
-      set_high_score(new_score)
-  return jsonify({'message': 'High score updated!'})
+@app.route('/highscore', methods=['GET', 'POST'])
+def handle_highscore():
+    chat_id = request.args.get('chat_id')
+    if request.method == 'POST':
+        # Store the high score
+        high_scores[chat_id] = request.json['score']
+        return jsonify(success=True)
+    else:
+        # Retrieve the high score
+        return jsonify(score=high_scores.get(chat_id, 0))
 
 if __name__ == '__main__':
-  app.run(host='0.0.0.0', port=5000)  # You can change the port if needed
+    app.run(port=5000)
