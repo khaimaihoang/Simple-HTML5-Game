@@ -3,7 +3,47 @@
 <head>
   <title>Clicker Adventure!</title>
   <style>
-    </style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f0f0f0;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+    }
+    h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+      text-align: center;
+      background-color: #0A6847; /* Green background for title */
+      color: white; /* White text for title */
+      padding: 10px 20px; /* Add padding for better spacing */
+      border-radius: 5px; /* Add rounded corners for a smoother look */
+    }
+    .buttons {
+      display: flex;
+      justify-content: space-around;
+      width: 50%;
+      margin-bottom: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.2em;
+      cursor: pointer;
+      background-color: #7ABA78; /* Blue background for buttons */
+      color: white; /* White text for buttons */
+    }
+    #count {
+      font-size: 4em;
+      color: #333;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
@@ -13,58 +53,20 @@
       <button onclick="increaseCount(1)">+1</button>
       <button onclick="increaseCount(2)">+2</button>
       <button onclick="increaseCount(3)">+3</button>
+
     </div>
     <h2 id="count">0</h2>
-
-    <h2>High Score</h2>
-    <h3 id="high-score">Loading...</h3>
-
-    <h2>Telegram Chat ID</h2>
+  
+    <h2>Telegram Chat ID</h1>
     <h3 id="chat-id"></h3>
   </div>
 
   <script>
     var count = 0;
-    var highScore = 0;
-
-    // Function to fetch the high score from the server
-    function getHighScore() {
-      fetch('http://192.168.100.126:5000/get_high_score')  // Update the URL
-        .then(response => response.json())
-        .then(data => {
-          highScore = data.highScore;
-          document.getElementById('high-score').innerText = highScore;
-        });
-    }
-
     function increaseCount(amount) {
       count += amount;
       document.getElementById('count').innerHTML = count;
-
-      // Check if new score is higher than high score
-      if (count > highScore) {
-        sendHighScore(count);
-      }
     }
-
-    // Function to send the new high score to the server
-    function sendHighScore(score) {
-      fetch('http://192.168.100.126:5000/set_high_score', {  // Update the URL
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        // Send only the score value as JSON data
-        body: JSON.stringify({ 'score': score })
-      })
-        .then(response => response.json())
-        .then(data => {
-          console.log(data.message);
-        });
-    }
-
-    // Call getHighScore on page load
-    getHighScore();
   </script>
 </body>
 </html>
