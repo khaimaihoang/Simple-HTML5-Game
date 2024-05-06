@@ -1,21 +1,34 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 
 app = Flask(__name__)
 
-@app.route("/", methods=["POST"])
-def handle_update():
-  update = request.get_json()
-  chat_id = update.get("message").get("chat").get("id")
+# Replace 'high_scores.txt' with your desired file for storing scores
+HIGH_SCORES_FILE = 'high_scores.txt'
 
-  # Optional: Store the chat_id for future use
+def get_high_score():
+  try:
+    with open(HIGH_SCORES_FILE, 'r') as f:
+      return int(f.read().strip())
+  except FileNotFoundError:
+    return 0
 
-  # Respond to the user with a message requesting chat ID
-  telegram_bot_token = "7077622229:AAEFrSSmt_xcE3b5b0rYAqNtz_zwGNPrRGQ"
-  message = "Please send me a message to get your chat ID."
-  url = f"https://api.telegram.org/bot{telegram_bot_token}/sendMessage?chat_id={chat_id}&text={message}"
-  # Send the message using your preferred library (requests, urllib etc.)
+def set_high_score(score):
+  with open(HIGH_SCORES_FILE, 'w') as f:
+    f.write(str(score))
 
-  return "OK"
+@app.route('/get_high_score', methods=['GET'])
+def get_high_score_route():
+  high_score = get_high_score()
+  return jsonify({'highScore': high_score})
 
-if __name__ == "__main__":
-  app.run(debug=True)
+@app.route('/set_high_score', methods=['POST'])
+def set_high_score_route():
+  data = request.get_json()
+  if data and 'score' in data:
+    new_score = data['score']
+    if new_score > get_high_score():
+      set_high_score(new_score)
+  return jsonify({'message': 'High score updated!'})
+
+if __name__ == '__main__':
+  app.run(host='0.0.0.0', port=5000)  # You can change the port if needed
