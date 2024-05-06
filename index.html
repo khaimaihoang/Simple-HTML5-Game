@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple HTML5 Game</title>
+</head>
+<body>
+    <h2>Simple Counter Game</h2>
+    <p>Click the buttons to increase the count!</p>
+
+    <button onclick="increaseCount(1)">Increase by 1</button>
+    <button onclick="increaseCount(2)">Increase by 2</button>
+    <button onclick="increaseCount(3)">Increase by 3</button>
+
+    <h2 id="count">0</h2>
+
+    <script>
+        var count = 0;
+        function increaseCount(amount) {
+            count += amount;
+            document.getElementById('count').innerHTML = count;
+        }
+    </script>
+</body>
+</html>
