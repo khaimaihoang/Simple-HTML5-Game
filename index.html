@@ -63,10 +63,29 @@
 
   <script>
     var count = 0;
+    var chatId = localStorage.getItem('chatId') || prompt('Enter your Telegram chat ID:');
+    localStorage.setItem('chatId', chatId);
+    document.getElementById('chat-id').innerHTML = chatId;
+
     function increaseCount(amount) {
       count += amount;
       document.getElementById('count').innerHTML = count;
+      fetch('http://localhost:5000/highscore?chat_id=' + chatId, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ score: count }),
+      });
     }
+
+    // Load the high score when the game starts
+    fetch('http://localhost:5000/highscore?chat_id=' + chatId)
+      .then(response => response.json())
+      .then(data => {
+        count = data.score;
+        document.getElementById('count').innerHTML = count;
+      });
   </script>
 </body>
 </html>
