@@ -66,6 +66,14 @@
       count += amount;
       document.getElementById('count').innerHTML = count;
     }
+
+    const btn = document.getElementById("get-chat-id-btn");
+    btn.addEventListener("click", () => {
+      fetch("/", { method: "POST" })
+        .then(response => response.text())
+        .then(data => console.log(data))
+        .catch(error => console.error(error));
+    });
   </script>
 </body>
 </html>
