@@ -105,13 +105,16 @@
         count = data.score;
         document.getElementById('count').innerHTML = count;
       });
-    function purchaseHighscore() {
-      // Construct the Telegram invoice URL with chat ID and product details
-      const invoiceUrl = `https://t.me/@GihOtMerchantBot?start=id1`;
+function purchaseHighscore() {
+    const invoiceData = {
+        eventType: 'web_app_open_invoice',
+        eventData: {
+            slug: 'your_invoice_slug' // Replace with your actual invoice slug
+        }
+    };
+    window.external.notify(JSON.stringify(invoiceData));
+}
 
-      // Redirect the user to the Telegram invoice URL using window.open
-      window.open(invoiceUrl, '_blank');
-    }
   </script>
 </body>
 
