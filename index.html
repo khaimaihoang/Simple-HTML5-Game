@@ -109,12 +109,18 @@ function purchaseHighscore() {
     const invoiceData = {
         eventType: 'web_app_open_invoice',
         eventData: {
-            slug: 'https://t.me/@GihOtMerchantBot?start=id1' // Replace with your actual invoice slug
+            slug: 'your_invoice_slug' // Replace with your actual invoice slug
         }
     };
-    window.external.notify(JSON.stringify(invoiceData));
-}
 
+    // Assuming window.TelegramWebviewProxy is available (check your integration)
+    if (window.TelegramWebviewProxy) {
+        window.TelegramWebviewProxy.postEvent('web_app_open_invoice', invoiceData);
+    } else {
+        // Handle case where TelegramWebviewProxy is not available (use appropriate method for your integration)
+        console.error("window.TelegramWebviewProxy not found. Invoice opening might not work as expected.");
+    }
+}
   </script>
 </body>
 
