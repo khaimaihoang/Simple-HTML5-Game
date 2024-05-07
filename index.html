@@ -126,7 +126,7 @@
             const eventData = {
                 slug: invoiceUrl
             };
-            window.TelegramWebviewProxy.postEvent('web_app_open_invoice', eventData);
+            //window.TelegramWebviewProxy.postEvent('web_app_open_invoice', eventData);
             window.external.notify(JSON.stringify({
                 eventType: 'web_app_open_invoice',
                 eventData: eventData
