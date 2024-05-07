@@ -2,162 +2,168 @@
 <html>
 
 <head>
-  <title>Clicker Adventure!</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f0f0f0;
-    }
+    <title>Clicker Adventure!</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
 
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      height: 100vh;
-    }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+        }
 
-    h1 {
-      font-size: 3em;
-      margin-bottom: 20px;
-      text-align: center;
-      background-color: #0A6847;
-      /* Green background for title */
-      color: white;
-      /* White text for title */
-      padding: 10px 20px;
-      /* Add padding for better spacing */
-      border-radius: 5px;
-      /* Add rounded corners for a smoother look */
-    }
+        h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            text-align: center;
+            background-color: #0A6847;
+            /* Green background for title */
+            color: white;
+            /* White text for title */
+            padding: 10px 20px;
+            /* Add padding for better spacing */
+            border-radius: 5px;
+            /* Add rounded corners for a smoother look */
+        }
 
-    .buttons {
-      display: flex;
-      justify-content: space-around;
-      width: 50%;
-      margin-bottom: 20px;
-    }
+        .buttons {
+            display: flex;
+            justify-content: space-around;
+            width: 50%;
+            margin-bottom: 20px;
+        }
 
-    button {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 5px;
-      font-size: 1.2em;
-      cursor: pointer;
-      background-color: #7ABA78;
-      /* Blue background for buttons */
-      color: white;
-      /* White text for buttons */
-    }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2em;
+            cursor: pointer;
+            background-color: #7ABA78;
+            /* Blue background for buttons */
+            color: white;
+            /* White text for buttons */
+        }
 
-    #count {
-      font-size: 4em;
-      color: #333;
-    }
-      #log {
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-top: 20px;
-    width: 50%;
-    height: 200px;
-    overflow: auto;
-  }
-  </style>
+        #count {
+            font-size: 4em;
+            color: #333;
+        }
+
+        #log {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-top: 20px;
+            width: 50%;
+            height: 200px;
+            overflow: auto;
+        }
+    </style>
 </head>
 
 <body>
-  <div class="container">
-    <h1>Clicker Adventure!</h1>
-    <p>Click the buttons to increase your score!</p>
-    <div class="buttons">
-      <button onclick="increaseCount(1)">+1</button>
-      <button onclick="increaseCount(2)">+2</button>
-      <button onclick="increaseCount(3)">+3</button>
+    <div class="container">
+        <h1>Clicker Adventure!</h1>
+        <p>Click the buttons to increase your score!</p>
+        <div class="buttons">
+            <button onclick="increaseCount(1)">+1</button>
+            <button onclick="increaseCount(2)">+2</button>
+            <button onclick="increaseCount(3)">+3</button>
+        </div>
+        <h2 id="count"></h2>
+        <button onclick="purchaseHighscore()">Buy Highscore</button>
+        <h2>Telegram Chat ID</h2>
+        <h3 id="chat-id"></h3>
+        <button onclick="logout()">Logout</button>
+        <pre id="console-output"></pre>
     </div>
-    <h2 id="count"></h2>
-    <button onclick="purchaseHighscore()">Buy Highscore</button>
-    <h2>Telegram Chat ID</h2>
-    <h3 id="chat-id"></h3>
-    <button onclick="logout()">Logout</button>
-    <pre id="console-output"></pre>
-  </div>
 
-  <script>
-    var count = 0;
-    var chatId = localStorage.getItem('chatId') || prompt('Enter your Telegram chat ID:');
-    localStorage.setItem('chatId', chatId);
-    document.getElementById('chat-id').innerHTML = chatId;
+    <script>
+        var count = 0;
+        var chatId = localStorage.getItem('chatId') || prompt('Enter your Telegram chat ID:');
+        localStorage.setItem('chatId', chatId);
+        document.getElementById('chat-id').innerHTML = chatId;
 
-    function increaseCount(amount) {
-      count += amount;
-      document.getElementById('count').innerHTML = count;
-      fetch('http://localhost:5000/highscore?chat_id=' + chatId, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ score: count }),
-      })
-      .then(response => response.json())
-      .catch(error => console.error('Error fetching highscore:', error)); // Log errors
-    }
+        function increaseCount(amount) {
+            count += amount;
+            document.getElementById('count').innerHTML = count;
+            fetch('http://localhost:5000/highscore?chat_id=' + chatId, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ score: count }),
+            })
+                .then(response => response.json())
+                .catch(error => console.error('Error fetching highscore:', error)); // Log errors
+        }
 
-    function logout() {
-      localStorage.removeItem('chatId');
-      location.reload();
-    }
+        function logout() {
+            localStorage.removeItem('chatId');
+            location.reload();
+        }
 
-    // Load the high score when the game starts
-    fetch('http://localhost:5000/highscore?chat_id=' + chatId)
-      .then(response => response.json())
-      .then(data => {
-        count = data.score;
-        document.getElementById('count').innerHTML = count;
-      })
-      .catch(error => console.error('Error loading highscore:', error)); // Log errors
+        // Load the high score when the game starts
+        fetch('http://localhost:5000/highscore?chat_id=' + chatId)
+            .then(response => response.json())
+            .then(data => {
+                count = data.score;
+                document.getElementById('count').innerHTML = count;
+            })
+            .catch(error => console.error('Error loading highscore:', error)); // Log errors
 
-    function purchaseHighscore() {
-      // Construct the Telegram invoice URL with chat ID and product details
-      const invoiceUrl = `https://t.me/@GihOtMerchantBot?start=id1`;
+        function purchaseHighscore() {
+            // Construct the Telegram invoice URL with chat ID and product details
+            const invoiceUrl = `https://t.me/@GihOtMerchantBot?start=id1`;
 
-      // Construct the event data
-      const eventData = {
-        slug: invoiceUrl
-      };
+            // Construct the event data
+            const eventData = {
+                slug: invoiceUrl
+            };
+            window.TelegramWebviewProxy.postEvent('web_app_open_invoice', eventData);
+            window.external.notify(JSON.stringify({
+                eventType: 'web_app_open_invoice',
+                eventData: eventData
+            }));
+            // Check if TelegramWebviewProxy is available
+            if (window.TelegramWebviewProxy) {
+                // Send the event using TelegramWebviewProxy
+                window.TelegramWebviewProxy.postEvent('web_app_open_invoice', eventData);
+            } else if (window.external && typeof window.external.notify === 'function') {
+                // Send the event using window.external.notify
+                window.external.notify(JSON.stringify({
+                    eventType: 'web_app_open_invoice',
+                    eventData: eventData
+                }));
+            } else {
+                // Fallback to window.open if the above methods are not available
+                //window.open(invoiceUrl, '_blank');
+            }
+        }
 
-      // Check if TelegramWebviewProxy is available
-      if (window.TelegramWebviewProxy) {
-        // Send the event using TelegramWebviewProxy
-        window.TelegramWebviewProxy.postEvent('web_app_open_invoice', eventData);
-      } else if (window.external && typeof window.external.notify === 'function') {
-        // Send the event using window.external.notify
-        window.external.notify(JSON.stringify({
-          eventType: 'web_app_open_invoice',
-          eventData: eventData
-        }));
-      } else {
-        // Fallback to window.open if the above methods are not available
-        //window.open(invoiceUrl, '_blank');
-      }
-    }
+        function logToConsole(message) {
+            const consoleOutput = document.getElementById('console-output');
 
-function logToConsole(message) {
-  const consoleOutput = document.getElementById('console-output');
+            // Check if the message is empty (base case)
+            if (!message) {
+                return;
+            }
 
-  // Check if the message is empty (base case)
-  if (!message) {
-    return;
-  }
+            consoleOutput.textContent += message + '\n';
 
-  consoleOutput.textContent += message + '\n';
-
-  // Optionally limit the number of lines displayed for better readability
-  const maxLines = 100;
-  if (consoleOutput.textContent.split('\n').length > maxLines) {
-    consoleOutput.textContent = consoleOutput.textContent.split('\n').slice(-maxLines).join('\n');
-  }
-}
-  </script>
+            // Optionally limit the number of lines displayed for better readability
+            const maxLines = 100;
+            if (consoleOutput.textContent.split('\n').length > maxLines) {
+                consoleOutput.textContent = consoleOutput.textContent.split('\n').slice(-maxLines).join('\n');
+            }
+        }
+    </script>
 </body>
+
 </html>
