@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Clicker Adventure!</title>
   <style>
@@ -9,42 +10,54 @@
       padding: 0;
       background-color: #f0f0f0;
     }
+
     .container {
       display: flex;
       flex-direction: column;
       align-items: center;
       height: 100vh;
     }
+
     h1 {
       font-size: 3em;
       margin-bottom: 20px;
       text-align: center;
-      background-color: #0A6847; /* Green background for title */
-      color: white; /* White text for title */
-      padding: 10px 20px; /* Add padding for better spacing */
-      border-radius: 5px; /* Add rounded corners for a smoother look */
+      background-color: #0A6847;
+      /* Green background for title */
+      color: white;
+      /* White text for title */
+      padding: 10px 20px;
+      /* Add padding for better spacing */
+      border-radius: 5px;
+      /* Add rounded corners for a smoother look */
     }
+
     .buttons {
       display: flex;
       justify-content: space-around;
       width: 50%;
       margin-bottom: 20px;
     }
+
     button {
       padding: 10px 20px;
       border: none;
       border-radius: 5px;
       font-size: 1.2em;
       cursor: pointer;
-      background-color: #7ABA78; /* Blue background for buttons */
-      color: white; /* White text for buttons */
+      background-color: #7ABA78;
+      /* Blue background for buttons */
+      color: white;
+      /* White text for buttons */
     }
+
     #count {
       font-size: 4em;
       color: #333;
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <h1>Clicker Adventure!</h1>
@@ -56,10 +69,10 @@
 
     </div>
     <h2 id="count"></h2>
-        <button onclick="purchaseHighscore()">Buy Highscore</button>
+    <button onclick="purchaseHighscore()">Buy Highscore</button>
     <h2>Telegram Chat ID</h1>
-    <h3 id="chat-id"></h3>
-   <button onclick="logout()">Logout</button>
+      <h3 id="chat-id"></h3>
+      <button onclick="logout()">Logout</button>
   </div>
 
   <script>
@@ -92,28 +105,14 @@
         count = data.score;
         document.getElementById('count').innerHTML = count;
       });
-        function purchaseHighscore() {
-      // Replace with the actual Telegram Wallet API call for purchase simulation
-      fetch('https://your-telegram-wallet-api.com/purchase?chat_id=' + chatId + '&amount=100&product=Highscore_Increase', { // Replace with your API endpoint
-        method: 'POST'
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.success) {
-          count += 100;
-          document.getElementById('count').innerHTML = count;
-          fetch('http://localhost:5000/highscore?chat_id=' + chatId, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ score: count }),
-          });
-        } else {
-          alert('Purchase Failed: ' + data.message);
-        }
-      });
+    function purchaseHighscore() {
+      // Construct the Telegram invoice URL with chat ID and product details
+      const invoiceUrl = `https://t.me/@GihOtMerchantBot?start=id1&amount=100&product=Highscore_Increase&chat_id=${chatId}`;
+
+      // Redirect the user to the Telegram invoice URL using window.open
+      window.open(invoiceUrl, '_blank');
     }
   </script>
 </body>
+
 </html>
