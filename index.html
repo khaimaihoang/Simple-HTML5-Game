@@ -138,32 +138,26 @@
         }));
       } else {
         // Fallback to window.open if the above methods are not available
-        window.open(invoiceUrl, '_blank');
+        //window.open(invoiceUrl, '_blank');
       }
     }
 
-    function logToConsole(message) {
-      const consoleOutput = document.getElementById('console-output');
-      consoleOutput.textContent += message + '\n';
-      // Optionally, limit the number of lines displayed for better readability
-      const maxLines = 100;
-      if (consoleOutput.textContent.split('\n').length > maxLines) {
-        consoleOutput.textContent = consoleOutput.textContent.split('\n').slice(-maxLines).join('\n');
-      }
-    }
+function logToConsole(message) {
+  const consoleOutput = document.getElementById('console-output');
 
-    // Redirect console.log output to the console element
-    console.log = function(message) {
-      logToConsole(message);
-      // Original console.log behavior for debugging purposes
-      Function.prototype.call.apply(console.log, arguments);
-    };
+  // Check if the message is empty (base case)
+  if (!message) {
+    return;
+  }
 
-    console.error = function(message) {
-      logToConsole('Error: ' + message);
-      // Original console.error behavior for debugging purposes
-      Function.prototype.call.apply(console.error, arguments);
-    };
+  consoleOutput.textContent += message + '\n';
+
+  // Optionally limit the number of lines displayed for better readability
+  const maxLines = 100;
+  if (consoleOutput.textContent.split('\n').length > maxLines) {
+    consoleOutput.textContent = consoleOutput.textContent.split('\n').slice(-maxLines).join('\n');
+  }
+}
   </script>
 </body>
 </html>
