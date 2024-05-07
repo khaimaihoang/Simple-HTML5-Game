@@ -55,6 +55,14 @@
       font-size: 4em;
       color: #333;
     }
+      #log {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-top: 20px;
+    width: 50%;
+    height: 200px;
+    overflow: auto;
+  }
   </style>
 </head>
 
@@ -73,9 +81,19 @@
     <h2>Telegram Chat ID</h1>
       <h3 id="chat-id"></h3>
       <button onclick="logout()">Logout</button>
+    <div id="log"></div>
   </div>
 
   <script>
+  var oldLog = console.log;
+  console.log = function(message) {
+    // Call the original console.log
+    oldLog.apply(console, arguments);
+
+    // Append the message to the log div
+    document.getElementById('log').innerHTML += message + '<br>';
+  };
+    
     var count = 0;
     var chatId = localStorage.getItem('chatId') || prompt('Enter your Telegram chat ID:');
     localStorage.setItem('chatId', chatId);
