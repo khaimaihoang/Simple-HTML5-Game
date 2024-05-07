@@ -146,23 +146,6 @@
                 //window.open(invoiceUrl, '_blank');
             }
         }
-
-        function logToConsole(message) {
-            const consoleOutput = document.getElementById('console-output');
-
-            // Check if the message is empty (base case)
-            if (!message) {
-                return;
-            }
-
-            consoleOutput.textContent += message + '\n';
-
-            // Optionally limit the number of lines displayed for better readability
-            const maxLines = 100;
-            if (consoleOutput.textContent.split('\n').length > maxLines) {
-                consoleOutput.textContent = consoleOutput.textContent.split('\n').slice(-maxLines).join('\n');
-            }
-        }
     </script>
 </body>
 
