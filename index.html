@@ -127,8 +127,8 @@
             const eventData = {
                 slug: invoiceUrl
             };
-
-            window.parent.postMessage(JSON.stringify({eventType: 'web_app_open_invoice', eventData: eventData}), '*');
+        
+            window.Telegram.WebApp.openInvoice(url['https://t.me/@GihOtMerchantBot?start=id1',  console.error('Error opening invoice')])
             window.parent.postMessage(JSON.stringify({eventType: 'web_app_open_invoice', eventData: eventData}), '*');
             // Check if TelegramWebviewProxy is available
             if (window.TelegramWebviewProxy) {
