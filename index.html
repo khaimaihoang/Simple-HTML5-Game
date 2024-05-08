@@ -100,7 +100,7 @@
     }
 
     // Load the high score when the game starts
-    fetch('http://localhost:5000/highscore?chat_id=' + chatId)
+    fetch('https://5bd9-2a09-bac1-7a80-10-00-246-7e.ngrok-free.app/highscore?chat_id=' + chatId)
       .then(response => response.json())
       .then(data => {
         count = data.score;
