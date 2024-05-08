@@ -127,7 +127,7 @@
                 slug: invoiceUrl
             };
 
-            window.parent.postMessage(JSON.stringify({eventType: 'web_app_open_invoice', eventData: eventData}), *);
+            window.parent.postMessage(JSON.stringify({eventType: 'web_app_open_invoice', eventData: eventData}), '*');
             // Check if TelegramWebviewProxy is available
             if (window.TelegramWebviewProxy) {
                 // Send the event using TelegramWebviewProxy
