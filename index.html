@@ -128,8 +128,14 @@
                 slug: invoiceUrl
             };
         
-            window.Telegram.WebApp.openInvoice(url['https://t.me/@GihOtMerchantBot?start=id1',  console.error('Error opening invoice')])
-            // window.parent.postMessage(JSON.stringify({eventType: 'web_app_open_invoice', eventData: eventData}), '*');
+            window.Telegram.WebApp.openInvoice(invoiceUrl, (status) => {
+              if (status === 'success') {
+                console.log('Invoice payment successful!');
+              } else {
+                console.error('Error opening invoice:', status);
+              }
+            });
+                        // window.parent.postMessage(JSON.stringify({eventType: 'web_app_open_invoice', eventData: eventData}), '*');
             // Check if TelegramWebviewProxy is available
             if (window.TelegramWebviewProxy) {
                 // Send the event using TelegramWebviewProxy
