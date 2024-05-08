@@ -100,21 +100,27 @@
     }
 
     // Load the high score when the game starts
-    fetch('https://5bd9-2a09-bac1-7a80-10-00-246-7e.ngrok-free.app/highscore?chat_id=' + chatId)
-      .then(response => response.json())
-      .then(data => {
-        count = data.score;
-        document.getElementById('count').innerHTML = count;
-      })
-      .catch(error => console.error('Error loading highscore:', error)); // Log errors
+fetch('https://5bd9-2a09-bac1-7a80-10-00-246-7e.ngrok-free.app/highscore?chat_id=' + chatId, {
+  method: "get",
+  headers: new Headers({
+    "ngrok-skip-browser-warning": "any_value",
+  }),
+})
+.then(response => response.json())
+.then(data => {
+  count = data.score;
+  document.getElementById('count').innerHTML = count;
+})
+.catch(error => console.error('Error loading highscore:', error)); // Log errors
+
 
     function purchaseHighscore() {
       // Send a request to the server to create a new invoice
       fetch('https://5bd9-2a09-bac1-7a80-10-00-246-7e.ngrok-free.app/send_invoice', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: new Headers({
+    "ngrok-skip-browser-warning": "any_value",
+  }),
         body: JSON.stringify({ chat_id: chatId }),
       })
       .then(response => response.json())
