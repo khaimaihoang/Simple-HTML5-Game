@@ -123,28 +123,21 @@
           'ngrok-skip-browser-warning': 'any_value',
         },
         body: JSON.stringify({ chat_id: chatId }),
-.then(response => {
-          // Log the response text
-          return response.text().then(text => {
-            console.log('Server response:', text);
-            // Then try to parse it as JSON
-            return JSON.parse(text);
+      })
+        .then(response => response.json())
+        .then(data => {
+          // Use the invoice link from the response to open the invoice
+          const invoiceUrl = data.invoice_url;
+          window.Telegram.WebApp.openInvoice(invoiceUrl, (status) => {
+            if (status === 'success') {
+              console.log('Invoice payment successful!');
+            } else {
+              console.error('Error opening invoice:', status);
+            }
           });
         })
-          .then(response => response.json())
-          .then(data => {
-            // Use the invoice link from the response to open the invoice
-            const invoiceUrl = data.invoice_url;
-            window.Telegram.WebApp.openInvoice(invoiceUrl, (status) => {
-              if (status === 'success') {
-                console.log('Invoice payment successful!');
-              } else {
-                console.error('Error opening invoice:', status);
-              }
-            });
-          })
-          .catch(error => console.error('Error creating invoice:', error)); // Log errors
-      }
+        .catch(error => console.error('Error creating invoice:', error)); // Log errors
+    }
   </script>
 </body>
 
