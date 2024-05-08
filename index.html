@@ -117,12 +117,20 @@ fetch('https://5bd9-2a09-bac1-7a80-10-00-246-7e.ngrok-free.app/highscore?chat_id
     function purchaseHighscore() {
       // Send a request to the server to create a new invoice
       fetch('https://5bd9-2a09-bac1-7a80-10-00-246-7e.ngrok-free.app/send_invoice', {
-        method: 'POST',
-headers: {
-          'ngrok-skip-browser-warning': 'any_value',
-        },
-        body: JSON.stringify({ chat_id: chatId }),
-      })
+  method: 'POST',
+  headers: {
+    'ngrok-skip-browser-warning': 'any_value',
+  },
+  body: JSON.stringify({ chat_id: chatId }),
+})
+.then(response => {
+  // Log the response text
+  return response.text().then(text => {
+    console.log('Server response:', text);
+    // Then try to parse it as JSON
+    return JSON.parse(text);
+  });
+})
       .then(response => response.json())
       .then(data => {
         // Use the invoice link from the response to open the invoice
