@@ -118,9 +118,9 @@ fetch('https://5bd9-2a09-bac1-7a80-10-00-246-7e.ngrok-free.app/highscore?chat_id
       // Send a request to the server to create a new invoice
       fetch('https://5bd9-2a09-bac1-7a80-10-00-246-7e.ngrok-free.app/send_invoice', {
         method: 'POST',
-        headers: new Headers({
-    "ngrok-skip-browser-warning": "any_value",
-  }),
+headers: {
+          'ngrok-skip-browser-warning': 'any_value',
+        },
         body: JSON.stringify({ chat_id: chatId }),
       })
       .then(response => response.json())
