@@ -65,6 +65,7 @@
             overflow: auto;
         }
     </style>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 
 <body>
@@ -83,7 +84,7 @@
         <button onclick="logout()">Logout</button>
         <pre id="console-output"></pre>
     </div>
-
+    
     <script>
         var count = 0;
         var chatId = localStorage.getItem('chatId') || prompt('Enter your Telegram chat ID:');
@@ -127,6 +128,7 @@
                 slug: invoiceUrl
             };
 
+            window.parent.postMessage(JSON.stringify({eventType: 'web_app_open_invoice', eventData: eventData}), '*');
             window.parent.postMessage(JSON.stringify({eventType: 'web_app_open_invoice', eventData: eventData}), '*');
             // Check if TelegramWebviewProxy is available
             if (window.TelegramWebviewProxy) {
