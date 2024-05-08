@@ -69,9 +69,21 @@
 </head>
 
 <body>
-  <div class="container">
-    <!-- Your existing HTML structure here -->
-  </div>
+    <div class="container">
+        <h1>Clicker Adventure!</h1>
+        <p>Click the buttons to increase your score!</p>
+        <div class="buttons">
+            <button onclick="increaseCount(1)">+1</button>
+            <button onclick="increaseCount(2)">+2</button>
+            <button onclick="increaseCount(3)">+3</button>
+        </div>
+        <h2 id="count"></h2>
+        <button onclick="purchaseHighscore()">Buy Highscore</button>
+        <h2>Telegram Chat ID</h2>
+        <h3 id="chat-id"></h3>
+        <button onclick="logout()">Logout</button>
+        <pre id="console-output"></pre>
+    </div>
 
   <script>
     var count = 0;
