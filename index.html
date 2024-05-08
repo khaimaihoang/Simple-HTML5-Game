@@ -120,37 +120,25 @@
             .catch(error => console.error('Error loading highscore:', error)); // Log errors
 
         function purchaseHighscore() {
-            // Construct the Telegram invoice URL with chat ID and product details
-            const invoiceUrl = `https://t.me/$5tfmBHdn2VUcAQAA4ctjrVvBtWI`;
-
-            // Construct the event data
-            const eventData = {
-                slug: invoiceUrl
-            };
-        
-            window.Telegram.WebApp.openInvoice(invoiceUrl, (status) => {
-              if (status === 'success') {
-                console.log('Invoice payment successful!');
-              } else {
-                console.error('Error opening invoice:', status);
-              }
-            });
-                        // window.parent.postMessage(JSON.stringify({eventType: 'web_app_open_invoice', eventData: eventData}), '*');
-            // Check if TelegramWebviewProxy is available
-            if (window.TelegramWebviewProxy) {
-                // Send the event using TelegramWebviewProxy
-                window.TelegramWebviewProxy.postEvent('web_app_open_invoice', eventData);
-            } else if (window.external && typeof window.external.notify === 'function') {
-                // Send the event using window.external.notify
-                window.external.notify(JSON.stringify({
-                    eventType: 'web_app_open_invoice',
-                    eventData: eventData
-                }));
-            } else {
-                // Fallback to window.open if the above methods are not available
-                //window.open(invoiceUrl, '_blank');
-            }
-        }
+  // Fetch invoice link from Telegram Bot API
+  fetch('http://your-bot-server-url/get_invoice_link', {
+    method: 'GET',
+  })
+  .then(response => response.json())
+  .then(data => {
+    const invoiceUrl = data.invoice_url;
+    
+    // Open invoice using Telegram.WebApp API
+    window.Telegram.WebApp.openInvoice(invoiceUrl, (status) => {
+      if (status === 'success') {
+        console.log('Invoice payment successful!');
+      } else {
+        console.error('Error opening invoice:', status);
+      }
+    });
+  })
+  .catch(error => console.error('Error fetching invoice:', error));
+}
     </script>
 </body>
 
