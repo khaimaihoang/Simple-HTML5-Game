@@ -70,19 +70,7 @@
 
 <body>
   <div class="container">
-    <h1>Clicker Adventure!</h1>
-    <p>Click the buttons to increase your score!</p>
-    <div class="buttons">
-      <button onclick="increaseCount(1)">+1</button>
-      <button onclick="increaseCount(2)">+2</button>
-      <button onclick="increaseCount(3)">+3</button>
-    </div>
-    <h2 id="count"></h2>
-    <button onclick="purchaseHighscore()">Buy Highscore</button>
-    <h2>Telegram Chat ID</h2>
-    <h3 id="chat-id"></h3>
-    <button onclick="logout()">Logout</button>
-    <pre id="console-output"></pre>
+    <!-- Your existing HTML structure here -->
   </div>
 
   <script>
@@ -92,22 +80,11 @@
     document.getElementById('chat-id').innerHTML = chatId;
 
     function increaseCount(amount) {
-      count += amount;
-      document.getElementById('count').innerHTML = count;
-      fetch('http://localhost:5000/highscore?chat_id=' + chatId, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ score: count }),
-      })
-        .then(response => response.json())
-        .catch(error => console.error('Error fetching highscore:', error)); // Log errors
+      // Your existing increaseCount function here
     }
 
     function logout() {
-      localStorage.removeItem('chatId');
-      location.reload();
+      // Your existing logout function here
     }
 
     // Load the high score when the game starts
@@ -120,24 +97,27 @@
       .catch(error => console.error('Error loading highscore:', error)); // Log errors
 
     function purchaseHighscore() {
-      // Fetch invoice link from Telegram Bot API
-      fetch('https://api.telegram.org/bot7077622229:AAEFrSSmt_xcE3b5b0rYAqNtz_zwGNPrRGQ/get_invoice_link', {
-        method: 'GET',
+      // Send a request to the server to create a new invoice
+      fetch('http://localhost:5000/send_invoice', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ chat_id: chatId }),
       })
-        .then(response => response.json())
-        .then(data => {
-          const invoiceUrl = data.invoice_url;
-
-          // Open invoice using Telegram.WebApp API
-          window.Telegram.WebApp.openInvoice(invoiceUrl, (status) => {
-            if (status === 'success') {
-              console.log('Invoice payment successful!');
-            } else {
-              console.error('Error opening invoice:', status);
-            }
-          });
-        })
-        .catch(error => console.error('Error fetching invoice:', error));
+      .then(response => response.json())
+      .then(data => {
+        // Use the invoice link from the response to open the invoice
+        const invoiceUrl = data.invoice_url;
+        window.Telegram.WebApp.openInvoice(invoiceUrl, (status) => {
+          if (status === 'success') {
+            console.log('Invoice payment successful!');
+          } else {
+            console.error('Error opening invoice:', status);
+          }
+        });
+      })
+      .catch(error => console.error('Error creating invoice:', error)); // Log errors
     }
   </script>
 </body>
